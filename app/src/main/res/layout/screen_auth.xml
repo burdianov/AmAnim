@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.crackncrunch.amanim.ui.screens.auth.AuthView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -37,67 +38,80 @@
             android:layout_above="@+id/social_wrap"
             android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/auth_card"
-                style="@style/CustomCard.LoginCard"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:visibility="visible">
+                android:layout_height="@dimen/auth_frame_height"
+                tools:background="@android:color/holo_blue_light"
+                >
 
-                <LinearLayout
+                <android.support.v7.widget.CardView
+                    android:id="@+id/auth_card"
+                    style="@style/CustomCard.LoginCard"
+                    android:layout_gravity="bottom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginTop="@dimen/spacing_tiny_6"
+                    android:layout_marginBottom="@dimen/spacing_tiny_6"
+                    app:cardElevation = "@dimen/spacing_zero"
+                    tools:visibility="visible"
+                    tools:layout_height="@dimen/spacing_bigger_44"
+                    android:visibility="gone">
 
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/login_email_wrap"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-                        <EditText
-                            android:id="@+id/login_email_et"
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/login_email_wrap"
+                            android:visibility="invisible"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/enter_email"
-                            android:inputType="textEmailAddress"
-                            android:textColor="@android:color/black"
-                            android:textColorHint="@android:color/darker_gray"
-                            android:textSize="@dimen/font_small_14"/>
-                    </android.support.design.widget.TextInputLayout>
+                            android:layout_height="wrap_content">
 
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/login_password_wrap"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                            <EditText
+                                android:id="@+id/login_email_et"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/enter_email"
+                                android:inputType="textEmailAddress"
+                                android:textColor="@android:color/black"
+                                android:textColorHint="@android:color/darker_gray"
+                                android:textSize="@dimen/font_small_14"/>
+                        </android.support.design.widget.TextInputLayout>
 
-                        <EditText
-                            android:id="@+id/login_password_et"
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/login_password_wrap"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/enter_password"
-                            android:inputType="textPassword"
-                            android:textColor="@android:color/black"
-                            android:textColorHint="@android:color/darker_gray"
-                            android:textSize="@dimen/font_small_14"/>
-                    </android.support.design.widget.TextInputLayout>
+                            android:layout_height="wrap_content">
 
-                </LinearLayout>
+                            <EditText
+                                android:id="@+id/login_password_et"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/enter_password"
+                                android:inputType="textPassword"
+                                android:textColor="@android:color/black"
+                                android:textColorHint="@android:color/darker_gray"
+                                android:textSize="@dimen/font_small_14"/>
+                        </android.support.design.widget.TextInputLayout>
 
-            </android.support.v7.widget.CardView>
+                    </LinearLayout>
 
-            <Button
-                android:id="@+id/show_catalog_btn"
-                style="@style/CustomButton"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="@string/view_catalog"
-                android:theme="@style/ShowBtn"/>
+                </android.support.v7.widget.CardView>
 
+                <Button
+                    android:id="@+id/show_catalog_btn"
+                    style="@style/CustomButton"
+                    android:theme="@style/ShowBtn"
+                    android:layout_gravity="bottom"
+                    android:text="@string/view_catalog"
+                    android:textColor="@color/colorPrimaryDark"/>
+            </FrameLayout>
             <Button
                 android:id="@+id/login_btn"
                 style="@style/CustomButton"
-                android:textColor="@color/color_white"
                 android:text="@string/login"
+                android:textColor="@color/color_white"
                 android:theme="@style/StartBtn"/>
         </LinearLayout>
 

@@ -39,6 +39,7 @@
     <!-- Spaces // Determine placement of type and icons from edges of elements. -->
     <!-- The text box offset is set to Leading (Type > Area Type Options).-->
     <dimen name="spacing_tiny_4">4dp</dimen>
+    <dimen name="spacing_tiny_6">6dp</dimen>
     <dimen name="spacing_small_8">8dp</dimen>
     <dimen name="spacing_small_12">12dp</dimen>
     <dimen name="spacing_normal_16">16dp</dimen>
@@ -95,5 +96,6 @@
     <dimen name="fab_bottom_space">16dp</dimen>
     <dimen name="product_info_card_height">145dp</dimen>
     <dimen name="size_badge_text">12sp</dimen>
+    <dimen name="auth_frame_height">140dp</dimen>
 
 </resources>

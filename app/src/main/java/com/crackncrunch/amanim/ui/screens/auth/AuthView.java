@@ -1,11 +1,11 @@
 package com.crackncrunch.amanim.ui.screens.auth;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -115,7 +115,7 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
     }
 
     private void showLoginState() {
-        Animation animation = new ScaleAnimation(
+        /*Animation animation = new ScaleAnimation(
                 1.0f, 1.0f,
                 0.3f, 1.0f,
                 Animation.RELATIVE_TO_SELF, 1.0f,
@@ -123,20 +123,20 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
         );
         animation.setDuration(500);
         mAuthCard.startAnimation(animation);
-
+*/
         mAuthCard.setVisibility(VISIBLE);
         mShowCatalogBtn.setVisibility(GONE);
     }
 
     private void showIdleState() {
-        Animation animation = new ScaleAnimation(
+       /* Animation animation = new ScaleAnimation(
                 1.0f, 1.0f,
                 1.0f, 0.3f,
                 Animation.RELATIVE_TO_SELF, 1.0f,
                 Animation.RELATIVE_TO_SELF, 1.0f
         );
         animation.setDuration(500);
-        mAuthCard.setAnimation(animation);
+        mAuthCard.setAnimation(animation);*/
 
         mAuthCard.setVisibility(GONE);
         mShowCatalogBtn.setVisibility(VISIBLE);
@@ -243,6 +243,26 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
         } else {
             return false;
         }
+    }
+
+    //endregion
+
+    @OnClick(R.id.logo_img)
+    void test() {
+        invalidLoginAnimation();
+    }
+
+    //region ==================== Animation ===================
+
+    private void invalidLoginAnimation() {
+        ObjectAnimator oa = ObjectAnimator.ofFloat(mLoginBtn, "rotationY", 2f);
+        ObjectAnimator ob = ObjectAnimator.ofFloat(mLoginBtn, "rotationY", -2f);
+        ObjectAnimator oc = ObjectAnimator.ofFloat(mLoginBtn, "rotationY", 0f);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playSequentially(oa, ob, oc);
+        animatorSet.setDuration(300);
+        animatorSet.start();
     }
 
     //endregion
