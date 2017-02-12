@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.crackncrunch.amanim.ui.screens.auth.AuthView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -39,34 +39,35 @@
             android:orientation="vertical">
 
             <FrameLayout
+                android:id="@+id/panel_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/auth_frame_height"
-                tools:background="@android:color/holo_blue_light"
-                >
+                tools:background="@android:color/holo_blue_light">
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/auth_card"
                     style="@style/CustomCard.LoginCard"
-                    android:layout_gravity="bottom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_tiny_6"
+                    android:layout_gravity="bottom"
                     android:layout_marginBottom="@dimen/spacing_tiny_6"
-                    app:cardElevation = "@dimen/spacing_zero"
-                    tools:visibility="visible"
+                    android:layout_marginTop="@dimen/spacing_tiny_6"
+                    android:visibility="gone"
+                    app:cardElevation="@dimen/spacing_zero"
                     tools:layout_height="@dimen/spacing_bigger_44"
-                    android:visibility="gone">
+                    tools:visibility="visible">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="invisible">
 
                         <android.support.design.widget.TextInputLayout
                             android:id="@+id/login_email_wrap"
-                            android:visibility="invisible"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:visibility="invisible">
 
                             <EditText
                                 android:id="@+id/login_email_et"
@@ -102,10 +103,10 @@
                 <Button
                     android:id="@+id/show_catalog_btn"
                     style="@style/CustomButton"
-                    android:theme="@style/ShowBtn"
                     android:layout_gravity="bottom"
                     android:text="@string/view_catalog"
-                    android:textColor="@color/colorPrimaryDark"/>
+                    android:textColor="@color/colorPrimaryDark"
+                    android:theme="@style/ShowBtn"/>
             </FrameLayout>
             <Button
                 android:id="@+id/login_btn"

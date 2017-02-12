@@ -4,10 +4,13 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.transition.Scene;
+import android.support.transition.TransitionManager;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -249,7 +252,9 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
 
     @OnClick(R.id.logo_img)
     void test() {
-        invalidLoginAnimation();
+        // TODO: 12-Feb-17 apply in case of invalid input of login or password
+//        invalidLoginAnimation();
+        showLoginWithAnim();
     }
 
     //region ==================== Animation ===================
@@ -258,7 +263,7 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
 
         AnimatorSet set = (AnimatorSet) AnimatorInflater
                 .loadAnimator(getContext(), R.animator.invalid_field_animator);
-        set.setTarget(mShowCatalogBtn);
+        set.setTarget(mAuthCard);
         set.start();
 
         //region ==================== For future reference ===================
@@ -273,6 +278,17 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
         animatorSet.start();*/
 
         //endregion
+    }
+
+    private void showLoginWithAnim() {
+        FrameLayout root = (FrameLayout) findViewById(R.id.panel_wrapper);
+        Scene authScene = Scene.getSceneForLayout(root, R.layout
+                .auth_panel_scene, getContext());
+        TransitionManager.go(authScene);
+    }
+
+    private void showIdleWithAnim() {
+
     }
 
     //endregion
