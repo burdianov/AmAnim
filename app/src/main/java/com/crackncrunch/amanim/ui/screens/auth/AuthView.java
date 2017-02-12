@@ -4,10 +4,9 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.transition.Scene;
-import android.support.transition.TransitionManager;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -19,6 +18,10 @@ import com.crackncrunch.amanim.di.DaggerService;
 import com.crackncrunch.amanim.mvp.views.AbstractView;
 import com.crackncrunch.amanim.mvp.views.IAuthView;
 import com.crackncrunch.amanim.utils.FieldsValidator;
+import com.transitionseverywhere.Scene;
+import com.transitionseverywhere.Slide;
+import com.transitionseverywhere.Transition;
+import com.transitionseverywhere.TransitionManager;
 
 import javax.inject.Inject;
 
@@ -281,10 +284,11 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
     }
 
     private void showLoginWithAnim() {
+        Transition transition = new Slide(Gravity.LEFT);
         FrameLayout root = (FrameLayout) findViewById(R.id.panel_wrapper);
         Scene authScene = Scene.getSceneForLayout(root, R.layout
                 .auth_panel_scene, getContext());
-        TransitionManager.go(authScene);
+        TransitionManager.go(authScene, transition);
     }
 
     private void showIdleWithAnim() {

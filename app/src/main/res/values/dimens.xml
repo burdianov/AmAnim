@@ -97,5 +97,6 @@
     <dimen name="product_info_card_height">145dp</dimen>
     <dimen name="size_badge_text">12sp</dimen>
     <dimen name="auth_frame_height">140dp</dimen>
+    <dimen name="card_elevation_normal">4dp</dimen>
 
 </resources>

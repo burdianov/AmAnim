@@ -10,7 +10,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/spacing_tiny_6"
     android:layout_marginBottom="@dimen/spacing_tiny_6"
-    app:cardElevation="@dimen/spacing_zero"
+    app:cardElevation="@dimen/card_elevation_normal"
     tools:visibility="visible"
     tools:layout_height="wrap_content">
 
