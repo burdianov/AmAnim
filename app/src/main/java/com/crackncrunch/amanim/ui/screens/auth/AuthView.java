@@ -1,7 +1,7 @@
 package com.crackncrunch.amanim.ui.screens.auth;
 
+import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v7.widget.CardView;
@@ -255,14 +255,24 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
     //region ==================== Animation ===================
 
     private void invalidLoginAnimation() {
-        ObjectAnimator oa = ObjectAnimator.ofFloat(mLoginBtn, "rotationY", 2f);
+
+        AnimatorSet set = (AnimatorSet) AnimatorInflater
+                .loadAnimator(getContext(), R.animator.invalid_field_animator);
+        set.setTarget(mShowCatalogBtn);
+        set.start();
+
+        //region ==================== For future reference ===================
+
+         /*ObjectAnimator oa = ObjectAnimator.ofFloat(mLoginBtn, "rotationY", 2f);
         ObjectAnimator ob = ObjectAnimator.ofFloat(mLoginBtn, "rotationY", -2f);
         ObjectAnimator oc = ObjectAnimator.ofFloat(mLoginBtn, "rotationY", 0f);
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playSequentially(oa, ob, oc);
         animatorSet.setDuration(300);
-        animatorSet.start();
+        animatorSet.start();*/
+
+        //endregion
     }
 
     //endregion
