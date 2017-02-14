@@ -4,13 +4,14 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.crackncrunch.amanim.R;
@@ -18,10 +19,11 @@ import com.crackncrunch.amanim.di.DaggerService;
 import com.crackncrunch.amanim.mvp.views.AbstractView;
 import com.crackncrunch.amanim.mvp.views.IAuthView;
 import com.crackncrunch.amanim.utils.FieldsValidator;
-import com.transitionseverywhere.Scene;
-import com.transitionseverywhere.Slide;
-import com.transitionseverywhere.Transition;
+import com.crackncrunch.amanim.utils.ViewHelper;
+import com.transitionseverywhere.ChangeBounds;
+import com.transitionseverywhere.Fade;
 import com.transitionseverywhere.TransitionManager;
+import com.transitionseverywhere.TransitionSet;
 
 import javax.inject.Inject;
 
@@ -62,6 +64,11 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
 
     private AuthScreen mScreen;
     private FieldsValidator mEmailValidator;
+    private float mDen;
+    private final ChangeBounds mBounds;
+    private final Fade mFade;
+    @BindView(R.id.panel_wrapper)
+    FrameLayout panelWrapper;
 
     public AuthView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -71,7 +78,9 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
                     .inject(this);
         }
 
-        // TODO: 25-Nov-16 get mScreen and dagger component
+        mBounds = new ChangeBounds();
+        mFade = new Fade();
+        mDen = (int) ViewHelper.getDensity(context);
     }
 
     @Override
@@ -113,7 +122,7 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
     //endregion
 
     private void showViewFromState() {
-        if (mScreen.getCustomState() == LOGIN_STATE) {
+        if (!isIdle()) {
             showLoginState();
         } else {
             showIdleState();
@@ -121,31 +130,27 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
     }
 
     private void showLoginState() {
-        /*Animation animation = new ScaleAnimation(
-                1.0f, 1.0f,
-                0.3f, 1.0f,
-                Animation.RELATIVE_TO_SELF, 1.0f,
-                Animation.RELATIVE_TO_SELF, 1.0f
-        );
-        animation.setDuration(500);
-        mAuthCard.startAnimation(animation);
-*/
-        mAuthCard.setVisibility(VISIBLE);
-        mShowCatalogBtn.setVisibility(GONE);
+        CardView.LayoutParams cardParam = (CardView.LayoutParams) mAuthCard
+                .getLayoutParams(); // получаем текущие параметры макета
+        cardParam.height = LinearLayout.LayoutParams.MATCH_PARENT; // устанавливаем высоту на высоту родителя
+        mAuthCard.setLayoutParams(cardParam); // устанавливаем параметры (requestLayout inside)
+        mAuthCard.getChildAt(0).setVisibility(VISIBLE); // input wrapper делаем видимым
+        mAuthCard.setCardElevation(4 * mDen); // устанавливаем подъем карточки авторизации
+        mShowCatalogBtn.setClickable(false); // отключаем кликабельность кнопки входа в каталог
+        mShowCatalogBtn.setVisibility(GONE); // скрываем кнопку
+        mScreen.setCustomState(LOGIN_STATE); // устанавливаем стейт LOGIN
     }
 
     private void showIdleState() {
-       /* Animation animation = new ScaleAnimation(
-                1.0f, 1.0f,
-                1.0f, 0.3f,
-                Animation.RELATIVE_TO_SELF, 1.0f,
-                Animation.RELATIVE_TO_SELF, 1.0f
-        );
-        animation.setDuration(500);
-        mAuthCard.setAnimation(animation);*/
-
-        mAuthCard.setVisibility(GONE);
+        CardView.LayoutParams cardParam = (CardView.LayoutParams) mAuthCard
+                .getLayoutParams();
+        cardParam.height = ((int) (44 * mDen));
+        mAuthCard.setLayoutParams(cardParam);
+        mAuthCard.getChildAt(0).setVisibility(INVISIBLE);
+        mAuthCard.setCardElevation(0f);
+        mShowCatalogBtn.setClickable(true);
         mShowCatalogBtn.setVisibility(VISIBLE);
+        mScreen.setCustomState(IDLE_STATE);
     }
 
     //region ==================== Events ===================
@@ -236,15 +241,9 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
     }
 
     @Override
-    public void setCustomState(int state) {
-        mScreen.setCustomState(state);
-        showViewFromState();
-    }
-
-    @Override
     public boolean viewOnBackPressed() {
         if (!isIdle()) {
-            setCustomState(IDLE_STATE);
+            showIdleWithAnim();
             return true;
         } else {
             return false;
@@ -283,16 +282,29 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
         //endregion
     }
 
-    private void showLoginWithAnim() {
-        Transition transition = new Slide(Gravity.LEFT);
+    public void showLoginWithAnim() {
+        TransitionSet set = new TransitionSet();
+        set.addTransition(mBounds)
+                .addTransition(mFade)
+                .setDuration(300)
+                .setInterpolator(new FastOutSlowInInterpolator())
+                .setOrdering(TransitionSet.ORDERING_SEQUENTIAL);
+        TransitionManager.beginDelayedTransition(panelWrapper, set);
+        showLoginState();
+
+        //region ==================== For future reference ===================
+
+        /*Transition transition = new Slide(Gravity.LEFT);
         FrameLayout root = (FrameLayout) findViewById(R.id.panel_wrapper);
         Scene authScene = Scene.getSceneForLayout(root, R.layout
                 .auth_panel_scene, getContext());
-        TransitionManager.go(authScene, transition);
+        TransitionManager.go(authScene, transition);*/
+
+        //endregion
     }
 
     private void showIdleWithAnim() {
-
+        showIdleState();
     }
 
     //endregion

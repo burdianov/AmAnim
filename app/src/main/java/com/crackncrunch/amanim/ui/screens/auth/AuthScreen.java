@@ -164,7 +164,7 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
         public void clickOnLogin() {
             if (getView() != null && getRootView() != null) {
                 if (getView().isIdle()) {
-                    getView().setCustomState(AuthView.LOGIN_STATE);
+                    getView().showLoginWithAnim();
                 } else {
                     String email = getView().getUserEmail();
                     String password = getView().getUserPassword();

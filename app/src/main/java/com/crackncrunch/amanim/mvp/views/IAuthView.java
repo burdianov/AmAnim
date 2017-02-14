@@ -12,5 +12,4 @@ public interface IAuthView extends IView {
     String getUserEmail();
     String getUserPassword();
     boolean isIdle();
-    void setCustomState(int state);
 }
