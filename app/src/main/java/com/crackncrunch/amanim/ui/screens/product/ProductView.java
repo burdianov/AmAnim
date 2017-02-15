@@ -1,20 +1,26 @@
 package com.crackncrunch.amanim.ui.screens.product;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.ViewAnimationUtils;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
 import com.crackncrunch.amanim.R;
 import com.crackncrunch.amanim.data.storage.dto.ProductDto;
 import com.crackncrunch.amanim.data.storage.dto.ProductLocalInfo;
 import com.crackncrunch.amanim.di.DaggerService;
 import com.crackncrunch.amanim.mvp.views.AbstractView;
 import com.crackncrunch.amanim.mvp.views.IProductView;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
@@ -38,6 +44,8 @@ public class ProductView extends AbstractView<ProductScreen.ProductPresenter>
     TextView mProductPriceTxt;
     @BindView(R.id.favorite_btn)
     CheckBox mFavoriteBtn;
+    @BindView(R.id.product_wrapper)
+    LinearLayout productWrapper;
 
     @Inject
     Picasso mPicasso;
@@ -124,11 +132,56 @@ public class ProductView extends AbstractView<ProductScreen.ProductPresenter>
     @OnClick(R.id.favorite_btn)
     void clickOnFavorite() {
         mPresenter.clickFavorite();
+        startAddToCartAnim(); // for testing purposes only
     }
 
     @OnClick(R.id.show_more_btn)
     void clickOnShowMore() {
         mPresenter.clickShowMore();
+    }
+
+    //endregion
+
+    //region ==================== Animation ===================
+
+    public void startAddToCartAnim() {
+        final int cx = (productWrapper.getLeft() + productWrapper.getRight()) / 2;
+        final int cy = (productWrapper.getTop() + productWrapper.getBottom()) / 2;
+        final int radius = Math.max(productWrapper.getWidth(), productWrapper
+                .getHeight());
+
+        Animator hideCircleAnim;
+        Animator showCircleAnim;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            hideCircleAnim = ViewAnimationUtils.createCircularReveal
+                    (productWrapper, cx, cy, radius, 0);
+            hideCircleAnim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    productWrapper.setVisibility(INVISIBLE);
+                }
+            });
+
+            showCircleAnim = ViewAnimationUtils.createCircularReveal
+                    (productWrapper, cx, cy, 0, radius);
+            showCircleAnim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    productWrapper.setVisibility(VISIBLE);
+                }
+            });
+        } else {
+            // TODO: 15-Feb-17 implement a prettier animation for old versions
+            hideCircleAnim = ObjectAnimator.ofFloat(productWrapper, "alpha", 0);
+            showCircleAnim = ObjectAnimator.ofFloat(productWrapper, "alpha", 1);
+        }
+
+        AnimatorSet hideSet = new AnimatorSet();
+        showCircleAnim.setStartDelay(1000);
+        hideSet.playSequentially(hideCircleAnim, showCircleAnim);
+        hideSet.start();
     }
 
     //endregion
