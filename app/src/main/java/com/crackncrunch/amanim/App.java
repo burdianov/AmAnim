@@ -2,8 +2,6 @@ package com.crackncrunch.amanim;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import com.crackncrunch.amanim.di.DaggerService;
 import com.crackncrunch.amanim.di.components.AppComponent;
@@ -20,8 +18,6 @@ import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
 
 public class App extends Application {
-    private static SharedPreferences sSharedPreferences;
-    private static Context sAppContext;
     private static Context sContext;
     private static AppComponent sAppComponent;
     private static RootActivity.RootComponent sRootActivityRootComponent;
@@ -61,9 +57,6 @@ public class App extends Application {
 
         ScreenScoper.registerScope(mRootScope);
         ScreenScoper.registerScope(mRootActivityScope);
-
-        sSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sAppContext = getApplicationContext();
     }
 
     private void createAppComponent() {
@@ -78,14 +71,6 @@ public class App extends Application {
                 getAppComponent(),
                 new PicassoCacheModule(),
                 new RootModule());
-    }
-
-    public static SharedPreferences getSharedPreferences() {
-        return sSharedPreferences;
-    }
-
-    public static Context getAppContext() {
-        return sAppContext;
     }
 
     public static RootActivity.RootComponent getRootActivityRootComponent() {

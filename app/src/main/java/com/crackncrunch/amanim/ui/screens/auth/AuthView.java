@@ -22,6 +22,7 @@ import com.crackncrunch.amanim.utils.FieldsValidator;
 import com.crackncrunch.amanim.utils.ViewHelper;
 import com.transitionseverywhere.ChangeBounds;
 import com.transitionseverywhere.Fade;
+import com.transitionseverywhere.Transition;
 import com.transitionseverywhere.TransitionManager;
 import com.transitionseverywhere.TransitionSet;
 
@@ -284,11 +285,11 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
 
     public void showLoginWithAnim() {
         TransitionSet set = new TransitionSet();
-        set.addTransition(mBounds)
-                .addTransition(mFade)
-                .setDuration(300)
-                .setInterpolator(new FastOutSlowInInterpolator())
-                .setOrdering(TransitionSet.ORDERING_SEQUENTIAL);
+        set.addTransition(mBounds) // анимируем положение и границы (высоту элементы и подъем)
+                .addTransition(mFade) // анимируем прозрачность (видимость элементов)
+                .setDuration(300) // продолжительность анимации
+                .setInterpolator(new FastOutSlowInInterpolator()) // устанавливаем временную функцию
+                .setOrdering(TransitionSet.ORDERING_SEQUENTIAL); // устанавливаем последовательность проигрывания анимаций при переходе
         TransitionManager.beginDelayedTransition(panelWrapper, set);
         showLoginState();
 
@@ -304,6 +305,18 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
     }
 
     private void showIdleWithAnim() {
+        TransitionSet set = new TransitionSet();
+        Transition fade = new Fade();
+        fade.addTarget(mAuthCard.getChildAt(0)); // анимация исчезновения для инпутов
+
+        set.addTransition(fade)
+                .addTransition(mBounds) // анимируем положение и границы (высоту элементы и подъем)
+                .addTransition(mFade) // анимируем прозрачность (видимость элементов)
+//                .setDuration(5000) // продолжительность анимации
+                .setInterpolator(new FastOutSlowInInterpolator()) // устанавливаем временную функцию
+                .setOrdering(TransitionSet.ORDERING_SEQUENTIAL); // устанавливаем последовательность проигрывания анимаций при переходе
+        TransitionManager.beginDelayedTransition(panelWrapper, set);
+
         showIdleState();
     }
 
