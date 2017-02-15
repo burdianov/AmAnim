@@ -14,9 +14,14 @@
             style="@style/CustomCard.ProductCard">
 
             <LinearLayout
+                android:id="@+id/product_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:foreground="@android:color/transparent"
                 android:orientation="vertical">
+
+                <!--fixme: transparent change to custom transparent hex-->
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -37,72 +42,75 @@
                         style="@style/ProductText.ProductDescription"
                         android:text="@string/lorem_ipsum"/>
 
-                    <com.crackncrunch.amanim.utils.AspectRatioImageView
-                        android:id="@+id/product_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_small_8"/>
+                </LinearLayout>
+
+                <com.crackncrunch.amanim.utils.AspectRatioImageView
+                    android:id="@+id/product_image"
+                    android:layout_marginLeft="@dimen/spacing_normal_16"
+                    android:layout_marginRight="@dimen/spacing_normal_16"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/product_image_height"/>
+
+                <LinearLayout
+                    android:id="@+id/product_vav_wrap"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/spacing_normal_16">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:baselineAligned="false"
-                        android:orientation="horizontal"
-                        android:paddingTop="@dimen/spacing_normal_16">
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/ProductText.LabelPrice"
+                            android:text="@string/quantity"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:orientation="vertical">
+                            android:orientation="horizontal">
+
+                            <ImageButton
+                                android:id="@+id/minus_btn"
+                                style="@style/CountBtn"
+                                android:contentDescription="@string/dummy_content_description"
+                                android:src="@drawable/ic_remove_black_24dp"/>
 
                             <TextView
-                                style="@style/ProductText.LabelPrice"
-                                android:text="@string/quantity"/>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:orientation="horizontal">
-
-                                <ImageButton
-                                    android:id="@+id/minus_btn"
-                                    style="@style/CountBtn"
-                                    android:contentDescription="@string/dummy_content_description"
-                                    android:src="@drawable/ic_remove_black_24dp"/>
-
-                                <TextView
-                                    android:id="@+id/product_count_txt"
-                                    style="@style/ProductText.ValuePrice"
-                                    android:text="@string/sample_quantity"/>
-
-                                <ImageButton
-                                    android:id="@+id/plus_btn"
-                                    style="@style/CountBtn"
-                                    android:contentDescription="@string/dummy_content_description"
-                                    android:src="@drawable/ic_add_black_24dp"/>
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <TextView
-                                style="@style/ProductText.LabelPrice"
-                                android:text="@string/price"/>
-
-                            <TextView
-                                android:id="@+id/product_price_txt"
+                                android:id="@+id/product_count_txt"
                                 style="@style/ProductText.ValuePrice"
-                                android:text="@string/sample_price"/>
+                                android:text="@string/sample_quantity"/>
 
+                            <ImageButton
+                                android:id="@+id/plus_btn"
+                                style="@style/CountBtn"
+                                android:contentDescription="@string/dummy_content_description"
+                                android:src="@drawable/ic_add_black_24dp"/>
                         </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/ProductText.LabelPrice"
+                            android:text="@string/price"/>
+
+                        <TextView
+                            android:id="@+id/product_price_txt"
+                            style="@style/ProductText.ValuePrice"
+                            android:text="@string/sample_price"/>
+
                     </LinearLayout>
                 </LinearLayout>
 
@@ -112,19 +120,19 @@
                     android:background="@color/grey_light"/>
 
                 <RelativeLayout
-                    android:paddingLeft="@dimen/spacing_small_8"
-                    android:paddingStart="@dimen/spacing_small_8"
-                    android:paddingRight="@dimen/spacing_normal_16"
-                    android:paddingEnd="@dimen/spacing_normal_16"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="@dimen/spacing_normal_16"
+                    android:paddingLeft="@dimen/spacing_small_8"
+                    android:paddingRight="@dimen/spacing_normal_16"
+                    android:paddingStart="@dimen/spacing_small_8">
 
                     <CheckBox
                         android:id="@+id/favorite_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:button="@drawable/favorite_selector_btn"/>
 
