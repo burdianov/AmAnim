@@ -49,7 +49,9 @@ public class ProductView extends AbstractView<ProductScreen.ProductPresenter>
     @BindView(R.id.favorite_btn)
     CheckBox mFavoriteBtn;
     @BindView(R.id.product_wrapper)
-    LinearLayout productWrapper;
+    LinearLayout mProductWrapper;
+
+    AnimatorSet mResultSet;
 
     @Inject
     Picasso mPicasso;
@@ -136,7 +138,6 @@ public class ProductView extends AbstractView<ProductScreen.ProductPresenter>
     @OnClick(R.id.favorite_btn)
     void clickOnFavorite() {
         mPresenter.clickFavorite();
-        startAddToCartAnim(); // for testing purposes only
     }
 
     @OnClick(R.id.show_more_btn)
@@ -149,9 +150,9 @@ public class ProductView extends AbstractView<ProductScreen.ProductPresenter>
     //region ==================== Animation ===================
 
     public void startAddToCartAnim() {
-        final int cx = (productWrapper.getLeft() + productWrapper.getRight()) / 2; // вычисляем центр карточки по X
-        final int cy = (productWrapper.getTop() + productWrapper.getBottom()) / 2; // вычисляем центр карточки по Y
-        final int radius = Math.max(productWrapper.getWidth(), productWrapper.getHeight()); // вычисляем радиус (максимальное значение высоты или ширины карточки)
+        final int cx = (mProductWrapper.getLeft() + mProductWrapper.getRight()) / 2; // вычисляем центр карточки по X
+        final int cy = (mProductWrapper.getTop() + mProductWrapper.getBottom()) / 2; // вычисляем центр карточки по Y
+        final int radius = Math.max(mProductWrapper.getWidth(), mProductWrapper.getHeight()); // вычисляем радиус (максимальное значение высоты или ширины карточки)
 
         final Animator hideCircleAnim;
         final Animator showCircleAnim;
@@ -161,28 +162,28 @@ public class ProductView extends AbstractView<ProductScreen.ProductPresenter>
         // VERY IMPORTANT!!! Reveal Animation must always be re-created!!!
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             hideCircleAnim = ViewAnimationUtils.createCircularReveal
-                    (productWrapper, cx, cy, radius, 0); // создаем анимацию  для объекта карточка, из центра, с максимального радиуса до 0
+                    (mProductWrapper, cx, cy, radius, 0); // создаем анимацию  для объекта карточка, из центра, с максимального радиуса до 0
             hideCircleAnim.addListener(new AnimatorListenerAdapter() { // вешаем слушатель на на окончание анимации, когда анимация  заканчивается, делаем карточку невидимой
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
-                    productWrapper.setVisibility(INVISIBLE);
+                    mProductWrapper.setVisibility(INVISIBLE);
                 }
             });
 
             showCircleAnim = ViewAnimationUtils.createCircularReveal
-                    (productWrapper, cx, cy, 0, radius);
+                    (mProductWrapper, cx, cy, 0, radius);
             showCircleAnim.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animation) {
                     super.onAnimationEnd(animation);
-                    productWrapper.setVisibility(VISIBLE);
+                    mProductWrapper.setVisibility(VISIBLE);
                 }
             });
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
 
-                ColorDrawable cdr = (ColorDrawable) productWrapper.getForeground();
+                ColorDrawable cdr = (ColorDrawable) mProductWrapper.getForeground();
 
                 hideColorAnim = ObjectAnimator.ofArgb(cdr, "color",
                         getResources().getColor(R.color.colorAccent, null));
@@ -191,13 +192,12 @@ public class ProductView extends AbstractView<ProductScreen.ProductPresenter>
             }
         } else {
             // TODO: 15-Feb-17 implement a prettier animation for old versions
-            hideCircleAnim = ObjectAnimator.ofFloat(productWrapper, "alpha", 0);
-            showCircleAnim = ObjectAnimator.ofFloat(productWrapper, "alpha", 1);
+            hideCircleAnim = ObjectAnimator.ofFloat(mProductWrapper, "alpha", 0);
+            showCircleAnim = ObjectAnimator.ofFloat(mProductWrapper, "alpha", 1);
         }
 
         AnimatorSet hideSet = new AnimatorSet();
         AnimatorSet showSet = new AnimatorSet();
-        AnimatorSet resultSet = new AnimatorSet();
 
         addAnimatorTogetherInSet(hideSet, hideCircleAnim, hideColorAnim); // добавляем аниматоры в сет (если они не null)
         addAnimatorTogetherInSet(showSet, showCircleAnim, showColorAnim);
@@ -208,8 +208,11 @@ public class ProductView extends AbstractView<ProductScreen.ProductPresenter>
         showSet.setDuration(600);
         showSet.setInterpolator(new FastOutSlowInInterpolator());
 
-        resultSet.playSequentially(hideSet, showSet); // результирующий сет последовательно проигрывает анимации скрытия и появления
-        resultSet.start();
+        if ((mResultSet != null && !mResultSet.isStarted()) || mResultSet == null) {
+            mResultSet = new AnimatorSet();
+            mResultSet.playSequentially(hideSet, showSet); // результирующий сет последовательно проигрывает анимации скрытия и появления
+            mResultSet.start();
+        }
 
         /*showCircleAnim.setStartDelay(1000);
         hideSet.playSequentially(hideCircleAnim, showCircleAnim);*/

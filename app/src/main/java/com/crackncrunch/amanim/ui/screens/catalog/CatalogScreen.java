@@ -3,7 +3,6 @@ package com.crackncrunch.amanim.ui.screens.catalog;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.squareup.picasso.Picasso;
 import com.crackncrunch.amanim.R;
 import com.crackncrunch.amanim.data.storage.realm.ProductRealm;
 import com.crackncrunch.amanim.di.DaggerService;
@@ -18,6 +17,7 @@ import com.crackncrunch.amanim.mvp.presenters.RootPresenter;
 import com.crackncrunch.amanim.ui.activities.RootActivity;
 import com.crackncrunch.amanim.ui.screens.auth.AuthScreen;
 import com.crackncrunch.amanim.ui.screens.product.ProductScreen;
+import com.squareup.picasso.Picasso;
 
 import dagger.Provides;
 import flow.Flow;
@@ -128,10 +128,8 @@ public class CatalogScreen extends AbstractScreen<RootActivity.RootComponent> {
         @Override
         public void clickOnBuyButton(int position) {
             if (getView() != null) {
-                if (checkUserAuth() && getRootView() != null) {
-                    getRootView().showMessage("Item " + mModel.getProductList()
-                            .get(position).getProductName() +
-                            " added successfully to the Cart");
+                if (checkUserAuth()) {
+                    getView().getCurrentProductView().startAddToCartAnim();
                 } else {
                     Flow.get(getView()).set(new AuthScreen());
                 }
@@ -148,7 +146,7 @@ public class CatalogScreen extends AbstractScreen<RootActivity.RootComponent> {
 
         @Override
         public boolean checkUserAuth() {
-            return mModel.isUserAuth();
+            return !mModel.isUserAuth();
         }
 
         private class RealmSubscriber extends Subscriber<ProductRealm> {

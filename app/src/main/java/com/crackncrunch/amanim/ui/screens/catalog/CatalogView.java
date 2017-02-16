@@ -9,6 +9,7 @@ import com.crackncrunch.amanim.R;
 import com.crackncrunch.amanim.di.DaggerService;
 import com.crackncrunch.amanim.mvp.views.AbstractView;
 import com.crackncrunch.amanim.mvp.views.ICatalogView;
+import com.crackncrunch.amanim.ui.screens.product.ProductView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -59,6 +60,11 @@ public class CatalogView extends AbstractView<CatalogScreen.CatalogPresenter>
 
     public CatalogAdapter getAdapter() {
         return mAdapter;
+    }
+
+    public ProductView getCurrentProductView() {
+        return (ProductView) mProductPager.findViewWithTag("Product" +
+                mProductPager.getCurrentItem());
     }
 
     //region ==================== Events ===================

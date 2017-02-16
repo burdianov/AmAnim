@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <android.support.v4.widget.NestedScrollView
@@ -12,6 +13,24 @@
         <android.support.v7.widget.CardView
             android:id="@+id/product_card"
             style="@style/CustomCard.ProductCard">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    app:srcCompat = "@drawable/ic_shopping_basket_black_24dp"
+                    android:layout_width="@dimen/spacing_larger_96"
+                    android:layout_height="@dimen/spacing_larger_96"/>
+
+                <TextView
+                    style="@style/ProductText.ProductTitle"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="@string/product_added"/>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/product_wrapper"
@@ -44,10 +63,10 @@
 
                 <com.crackncrunch.amanim.utils.AspectRatioImageView
                     android:id="@+id/product_image"
-                    android:layout_marginLeft="@dimen/spacing_normal_16"
-                    android:layout_marginRight="@dimen/spacing_normal_16"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/product_image_height"/>
+                    android:layout_height="@dimen/product_image_height"
+                    android:layout_marginLeft="@dimen/spacing_normal_16"
+                    android:layout_marginRight="@dimen/spacing_normal_16"/>
 
                 <LinearLayout
                     android:id="@+id/product_vav_wrap"
@@ -78,7 +97,7 @@
                                 android:id="@+id/minus_btn"
                                 style="@style/CountBtn"
                                 android:contentDescription="@string/dummy_content_description"
-                                android:src="@drawable/ic_remove_black_24dp"/>
+                                app:srcCompat="@drawable/ic_remove_black_24dp"/>
 
                             <TextView
                                 android:id="@+id/product_count_txt"
@@ -89,7 +108,7 @@
                                 android:id="@+id/plus_btn"
                                 style="@style/CountBtn"
                                 android:contentDescription="@string/dummy_content_description"
-                                android:src="@drawable/ic_add_black_24dp"/>
+                                app:srcCompat="@drawable/ic_add_black_24dp"/>
                         </LinearLayout>
                     </LinearLayout>
 

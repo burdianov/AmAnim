@@ -54,6 +54,7 @@ public class CatalogAdapter extends PagerAdapter {
         if (invalidProductsPositions.contains(position)) {
             newView = LayoutInflater.from(container.getContext()).inflate(R.layout
                     .screen_product_deleted, container, false);
+            newView.setTag("Product" + position); // добавляем таг к вью продукта
             mProductList.remove(position);
             notifyDataSetChanged();
         } else {
@@ -62,6 +63,7 @@ public class CatalogAdapter extends PagerAdapter {
                     (product, container.getContext());
             newView = LayoutInflater.from(productContext).inflate(R.layout
                     .screen_product, container, false);
+            newView.setTag("Product" + position); // добавляем таг к вью продукта
         }
         container.addView(newView);
         return newView;
