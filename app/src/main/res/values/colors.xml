@@ -17,4 +17,6 @@
 
     <color name="color_swipe_delete">#E65100</color>
     <color name="color_swipe_edit">#00C853</color>
+
+    <color name="transparent">#00FFFFFF</color>
 </resources>

@@ -5,6 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.util.AttributeSet;
 import android.view.ViewAnimationUtils;
 import android.widget.CheckBox;
@@ -21,6 +23,8 @@ import com.crackncrunch.amanim.mvp.views.IProductView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -145,17 +149,20 @@ public class ProductView extends AbstractView<ProductScreen.ProductPresenter>
     //region ==================== Animation ===================
 
     public void startAddToCartAnim() {
-        final int cx = (productWrapper.getLeft() + productWrapper.getRight()) / 2;
-        final int cy = (productWrapper.getTop() + productWrapper.getBottom()) / 2;
-        final int radius = Math.max(productWrapper.getWidth(), productWrapper
-                .getHeight());
+        final int cx = (productWrapper.getLeft() + productWrapper.getRight()) / 2; // вычисляем центр карточки по X
+        final int cy = (productWrapper.getTop() + productWrapper.getBottom()) / 2; // вычисляем центр карточки по Y
+        final int radius = Math.max(productWrapper.getWidth(), productWrapper.getHeight()); // вычисляем радиус (максимальное значение высоты или ширины карточки)
 
-        Animator hideCircleAnim;
-        Animator showCircleAnim;
+        final Animator hideCircleAnim;
+        final Animator showCircleAnim;
+        Animator hideColorAnim = null;
+        Animator showColorAnim = null;
+
+        // VERY IMPORTANT!!! Reveal Animation must always be re-created!!!
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             hideCircleAnim = ViewAnimationUtils.createCircularReveal
-                    (productWrapper, cx, cy, radius, 0);
-            hideCircleAnim.addListener(new AnimatorListenerAdapter() {
+                    (productWrapper, cx, cy, radius, 0); // создаем анимацию  для объекта карточка, из центра, с максимального радиуса до 0
+            hideCircleAnim.addListener(new AnimatorListenerAdapter() { // вешаем слушатель на на окончание анимации, когда анимация  заканчивается, делаем карточку невидимой
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
@@ -172,6 +179,16 @@ public class ProductView extends AbstractView<ProductScreen.ProductPresenter>
                     productWrapper.setVisibility(VISIBLE);
                 }
             });
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+
+                ColorDrawable cdr = (ColorDrawable) productWrapper.getForeground();
+
+                hideColorAnim = ObjectAnimator.ofArgb(cdr, "color",
+                        getResources().getColor(R.color.colorAccent, null));
+                showColorAnim = ObjectAnimator.ofArgb(cdr, "color",
+                        getResources().getColor(R.color.transparent, null));
+            }
         } else {
             // TODO: 15-Feb-17 implement a prettier animation for old versions
             hideCircleAnim = ObjectAnimator.ofFloat(productWrapper, "alpha", 0);
@@ -179,9 +196,34 @@ public class ProductView extends AbstractView<ProductScreen.ProductPresenter>
         }
 
         AnimatorSet hideSet = new AnimatorSet();
-        showCircleAnim.setStartDelay(1000);
-        hideSet.playSequentially(hideCircleAnim, showCircleAnim);
-        hideSet.start();
+        AnimatorSet showSet = new AnimatorSet();
+        AnimatorSet resultSet = new AnimatorSet();
+
+        addAnimatorTogetherInSet(hideSet, hideCircleAnim, hideColorAnim); // добавляем аниматоры в сет (если они не null)
+        addAnimatorTogetherInSet(showSet, showCircleAnim, showColorAnim);
+        hideSet.setDuration(600); // устанавливаем длительность анимации
+        hideSet.setInterpolator(new FastOutSlowInInterpolator()); // устанавливаем временную функцию (интерполятор) анимации
+
+        showSet.setStartDelay(1000); // устанавливаем задержку анимации появления
+        showSet.setDuration(600);
+        showSet.setInterpolator(new FastOutSlowInInterpolator());
+
+        resultSet.playSequentially(hideSet, showSet); // результирующий сет последовательно проигрывает анимации скрытия и появления
+        resultSet.start();
+
+        /*showCircleAnim.setStartDelay(1000);
+        hideSet.playSequentially(hideCircleAnim, showCircleAnim);*/
+        // hideSet.start();
+    }
+
+    private void addAnimatorTogetherInSet(AnimatorSet set, Animator... anims) {
+        ArrayList<Animator> animatorList = new ArrayList<>();
+        for (Animator animator : anims) {
+            if (animator != null) {
+                animatorList.add(animator);
+            }
+        }
+        set.playTogether(animatorList);
     }
 
     //endregion
