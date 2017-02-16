@@ -145,7 +145,7 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
     private void showIdleState() {
         CardView.LayoutParams cardParam = (CardView.LayoutParams) mAuthCard
                 .getLayoutParams();
-        cardParam.height = ((int) (44 * mDen));
+        cardParam.height = ((int) (56 * mDen));
         mAuthCard.setLayoutParams(cardParam);
         mAuthCard.getChildAt(0).setVisibility(INVISIBLE);
         mAuthCard.setCardElevation(0f);
@@ -285,7 +285,7 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
 
     public void showLoginWithAnim() {
         TransitionSet set = new TransitionSet();
-        set.addTransition(mBounds) // анимируем положение и границы (высоту элементы и подъем)
+        set.addTransition(mBounds) // анимируем положение и границы (высоту элемента и подъем)
                 .addTransition(mFade) // анимируем прозрачность (видимость элементов)
                 .setDuration(300) // продолжительность анимации
                 .setInterpolator(new FastOutSlowInInterpolator()) // устанавливаем временную функцию
@@ -310,7 +310,7 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
         fade.addTarget(mAuthCard.getChildAt(0)); // анимация исчезновения для инпутов
 
         set.addTransition(fade)
-                .addTransition(mBounds) // анимируем положение и границы (высоту элементы и подъем)
+                .addTransition(mBounds) // анимируем положение и границы (высоту элемента и подъем)
                 .addTransition(mFade) // анимируем прозрачность (видимость элементов)
 //                .setDuration(5000) // продолжительность анимации
                 .setInterpolator(new FastOutSlowInInterpolator()) // устанавливаем временную функцию
