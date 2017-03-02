@@ -1,16 +1,21 @@
 package com.crackncrunch.amanim.ui.screens.auth;
 
+import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.graphics.drawable.AnimatedVectorDrawable;
+import android.os.Build;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,12 +31,18 @@ import com.transitionseverywhere.Transition;
 import com.transitionseverywhere.TransitionManager;
 import com.transitionseverywhere.TransitionSet;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import flow.Flow;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static com.crackncrunch.amanim.utils.ConstantsManager.CUSTOM_FONTS_ROOT;
 import static com.crackncrunch.amanim.utils.ConstantsManager.CUSTOM_FONT_NAME;
@@ -40,6 +51,7 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
 
     public static final int LOGIN_STATE = 0;
     public static final int IDLE_STATE = 1;
+    private final Animator mScaleAnimator;
 
     @Inject
     AuthScreen.AuthPresenter mPresenter;
@@ -62,14 +74,17 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
     ImageButton mTwitter;
     @BindView(R.id.vk_social_btn)
     ImageButton mVK;
+    @BindView(R.id.panel_wrapper)
+    FrameLayout panelWrapper;
+    @BindView(R.id.logo_img)
+    ImageView mLogo;
 
     private AuthScreen mScreen;
     private FieldsValidator mEmailValidator;
     private float mDen;
     private final ChangeBounds mBounds;
     private final Fade mFade;
-    @BindView(R.id.panel_wrapper)
-    FrameLayout panelWrapper;
+    private Subscription mAnimObs;
 
     public AuthView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -82,6 +97,9 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
         mBounds = new ChangeBounds();
         mFade = new Fade();
         mDen = (int) ViewHelper.getDensity(context);
+
+        mScaleAnimator = AnimatorInflater.loadAnimator(getContext(), R
+                .animator.logo_scale_animator);
     }
 
     @Override
@@ -98,6 +116,7 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
 
         if (!isInEditMode()) {
             showViewFromState();
+            startLogoAnim();
         }
 
         mEmailValidator = new FieldsValidator(getContext(), mEmailEt, null);
@@ -117,6 +136,9 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
         super.onDetachedFromWindow();
         if (!isInEditMode()) {
             mPresenter.dropView(this);
+            if (mAnimObs != null) {
+                mAnimObs.unsubscribe();
+            }
         }
     }
 
@@ -318,6 +340,23 @@ public class AuthView extends AbstractView<AuthScreen.AuthPresenter> implements 
         TransitionManager.beginDelayedTransition(panelWrapper, set);
 
         showIdleState();
+    }
+
+    private void startLogoAnim() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            AnimatedVectorDrawable avd = (AnimatedVectorDrawable) mLogo.getDrawable();
+            mScaleAnimator.setTarget(mLogo);
+
+            mAnimObs = Observable.interval(3000, TimeUnit.MILLISECONDS)
+                    .subscribeOn(Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(aLong -> {
+                        mScaleAnimator.start();
+                        avd.start();
+                    });
+
+            avd.start();
+        }
     }
 
     //endregion

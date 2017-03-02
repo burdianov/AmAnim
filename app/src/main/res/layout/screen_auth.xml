@@ -12,13 +12,13 @@
 
         <ImageView
             android:id="@+id/logo_img"
-            android:layout_width="@dimen/login_logo_width_70"
+            android:layout_width="@dimen/login_logo_height_100"
             android:layout_height="@dimen/login_logo_height_100"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/spacing_bigger_plus_48"
             android:contentDescription="@string/app_logo"
-            android:src="@drawable/firebase_icon"/>
+            android:src="@drawable/avd_vector_anim"/>
 
         <TextView
             android:id="@+id/app_name_txt"

@@ -24,6 +24,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -161,8 +162,7 @@ public class RootActivity extends AppCompatActivity implements IRootView,
         if (mDrawer.isDrawerOpen(GravityCompat.START)) {
             mDrawer.closeDrawer(GravityCompat.START);
         } else if (getCurrentScreen() != null && !getCurrentScreen()
-                .viewOnBackPressed()
-                && !Flow.get(this).goBack()) {
+                .viewOnBackPressed() && !Flow.get(this).goBack()) {
             mExitDialog.show();
         }
     }

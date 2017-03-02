@@ -21,7 +21,7 @@ public class AspectRatioImageView extends ImageView {
         a.recycle();
     }
 
-    @Override
+    /*@Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int newWidth;
@@ -31,5 +31,5 @@ public class AspectRatioImageView extends ImageView {
         newHeight = (int) (newWidth / mAspectRatio);
 
         setMeasuredDimension(newWidth, newHeight);
-    }
+    }*/
 }

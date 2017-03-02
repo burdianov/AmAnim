@@ -61,8 +61,6 @@ public class AddressView extends AbstractView<AddressScreen.AddressPresenter>
     protected void onFinishInflate() {
         super.onFinishInflate();
         ButterKnife.bind(this);
-        startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.enter_animation));
-
     }
 
     @Override

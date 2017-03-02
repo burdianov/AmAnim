@@ -30,6 +30,16 @@ public class ProductScreen extends AbstractScreen<CatalogScreen.Component> {
         mProductRealm = product;
     }
 
+    private int mImageState = 1;
+
+    public void setImageState(int imageState) {
+        mImageState = imageState;
+    }
+
+    public int getImageState() {
+        return mImageState;
+    }
+
     //region ==================== Flow & Mortar ===================
 
     @Override

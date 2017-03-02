@@ -43,7 +43,9 @@ public class ScreenScoper {
 
     public static void destroyScreenScope(String scopeName) {
         MortarScope mortarScope = sScopeMap.get(scopeName);
-        mortarScope.destroy();
+        if (mortarScope != null) {
+            mortarScope.destroy();
+        }
         cleanScopeMap();
     }
 

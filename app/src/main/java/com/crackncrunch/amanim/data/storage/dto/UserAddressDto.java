@@ -18,8 +18,7 @@ public class UserAddressDto implements Parcelable {
     }
 
     public UserAddressDto(String id, String name, String street, String house,
-                          String
-            apartment, int floor, String comment) {
+                          String apartment, int floor, String comment) {
         this.id = id;
         this.name = name;
         this.street = street;

@@ -89,11 +89,9 @@ public class AccountScreen extends AbstractScreen<RootActivity.RootComponent> {
     @AccountScope
     public interface Component {
         void inject(AccountPresenter presenter);
-
         void inject(AccountView view);
 
         RootPresenter getRootPresenter();
-
         AccountModel getAccountModel();
     }
 

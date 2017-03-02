@@ -57,8 +57,8 @@ public class CatalogScreen extends AbstractScreen<RootActivity.RootComponent> {
         }
     }
 
-    @dagger.Component(dependencies = RootActivity.RootComponent.class, modules =
-            Module.class)
+    @dagger.Component(dependencies = RootActivity.RootComponent.class,
+            modules = Module.class)
     @DaggerScope(CatalogScreen.class)
     public interface Component {
         void inject(CatalogPresenter presenter);
@@ -75,7 +75,7 @@ public class CatalogScreen extends AbstractScreen<RootActivity.RootComponent> {
 
     public class CatalogPresenter extends AbstractPresenter<CatalogView,
             CatalogModel> implements ICatalogPresenter {
-        private int lastPagerPostion;
+        private int lastPagerPosition;
 
         //region ==================== Lifecycle ===================
 
@@ -92,7 +92,7 @@ public class CatalogScreen extends AbstractScreen<RootActivity.RootComponent> {
 
         @Override
         public void dropView(CatalogView view) {
-            lastPagerPostion = getView().getCurrentPagerPosition();
+            lastPagerPosition = getView().getCurrentPagerPosition();
             super.dropView(view);
         }
 
@@ -167,7 +167,7 @@ public class CatalogScreen extends AbstractScreen<RootActivity.RootComponent> {
             @Override
             public void onNext(ProductRealm productRealm) {
                 mAdapter.addItem(productRealm);
-                if (mAdapter.getCount() - 1 == lastPagerPostion) {
+                if (mAdapter.getCount() - 1 == lastPagerPosition) {
                     getRootView().hideLoad();
                     getView().showCatalogView();
                 }

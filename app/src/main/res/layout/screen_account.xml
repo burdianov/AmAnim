@@ -46,7 +46,6 @@
             android:layout_marginTop="@dimen/account_avatar_margin_top"
             android:background="@drawable/flat_color_bg"
             android:elevation="4dp"
-            android:src="@drawable/user_avatar"
             app:civ_border_color="@color/color_white"
             app:civ_border_width="@dimen/line_size_2"
             app:layout_anchorGravity="bottom|center_horizontal"

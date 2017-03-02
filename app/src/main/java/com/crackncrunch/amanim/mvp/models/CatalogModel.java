@@ -31,8 +31,8 @@ public class CatalogModel extends AbstractModel {
     }
 
     public Observable<ProductRealm> getProductObs() {
-        //Observable<ProductRealm> network = fromNetwork();
-        Observable<ProductRealm> network = Observable.empty();
+        Observable<ProductRealm> network = fromNetwork();
+        //Observable<ProductRealm> network = Observable.empty();
         Observable<ProductRealm> disk = fromDisk();
         return Observable.mergeDelayError(disk, network)
                 .distinct(ProductRealm::getId);

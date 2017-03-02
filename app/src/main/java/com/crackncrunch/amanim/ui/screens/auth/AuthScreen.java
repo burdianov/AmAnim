@@ -123,19 +123,19 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
                 }
                 getView().setTypeface();
             }
-            mCompSubs.add(subscribeOnProductRealmObs());
+            //mCompSubs.add(subscribeOnProductRealmObs());
         }
 
-        private Subscription subscribeOnProductRealmObs() {
+        /*private Subscription subscribeOnProductRealmObs() {
             if (getRootView() != null) {
                 getRootView().showLoad();
             }
             return mModel.getProductObsFromNetwork()
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new RealmSubscriber());
-        }
+        }*/
 
-        private class RealmSubscriber extends Subscriber<ProductRealm> {
+        /*private class RealmSubscriber extends Subscriber<ProductRealm> {
 
             @Override
             public void onCompleted() {
@@ -153,7 +153,7 @@ public class AuthScreen extends AbstractScreen<RootActivity.RootComponent> {
             public void onNext(ProductRealm productRealm) {
 
             }
-        }
+        }*/
 
         @Nullable
         protected IRootView getRootView() {
