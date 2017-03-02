@@ -31,7 +31,6 @@ public class RealmManager {
     }
 
     public RealmResults<UserAddressRealm> getAllAddressesFromRealm() {
-
         RealmResults<UserAddressRealm> addresses = getQueryRealmInstance()
                 .where(UserAddressRealm.class).findAll();
 
